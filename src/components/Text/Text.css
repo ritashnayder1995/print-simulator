@@ -1,0 +1,17 @@
+.greenBox {
+  background-color: green;
+  color: white;
+  border-radius: 3px;
+  padding: 2px;
+}
+
+.green {
+  color: green;
+}
+
+.redBox {
+  background-color: red;
+  color: white;
+  border-radius: 3px;
+  padding: 2px;
+}

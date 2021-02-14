@@ -1,6 +1,8 @@
 import React from 'react';
 import './TrainingApparatus.css';
 import Text from '../Text/Text';
+import Accuracy from '../Accuracy/Accuracy';
+import Speed from '../Speed/Speed';
 
 const text = "Несмотря на то, что клуб существует меньше месяца, участники уже добились определенных успехов. Помогли начинающим мемуаристам первые занятия, на которых сотрудники Главного архивного управления Москвы дали участникам ценные советы и новые знания. Елена Болдина, главный хранитель фондов Главархива, и Марьям Кустова, глава экспертной группы по истории Москвы, рассказали участникам, как описывать события из своего детства, мемуары каких известных людей стоит почитать и раскрыли секреты поиска предков по метрическим книгам.";
 
@@ -9,7 +11,8 @@ class TrainingApparatus extends React.Component {
   state = {
     textArray: [],
     currentSymbolIndex: 0,
-    isError: false
+    isError: false,
+    countError: 0
   };
 
   componentDidMount() {
@@ -36,6 +39,9 @@ class TrainingApparatus extends React.Component {
     const currentSymbol = textArrayFromState[currentSymbolIndexFromState];
     const currentCode = currentSymbol.charCodeAt(0);
 
+    const currentCountError = this.state.countError;
+    const currentIsError = this.state.isError;
+
     if (userCode === currentCode) {
       this.setState({
         currentSymbolIndex: currentSymbolIndexFromState + 1,
@@ -43,7 +49,10 @@ class TrainingApparatus extends React.Component {
       });
     } else {
       this.setState({
-        isError: true
+        isError: true,
+        countError: currentIsError 
+                      ? currentCountError
+                      : currentCountError + 1
       });
     }
 
@@ -53,10 +62,13 @@ class TrainingApparatus extends React.Component {
     const textArrayFromState = this.state.textArray;
     const currentSymbolIndexFromState = this.state.currentSymbolIndex;
     const isErrorFromState = this.state.isError;
+    const currentCountError = this.state.countError;
 
     return (
       <div className="trainingApparatusRoot">
         <Text textArray={textArrayFromState} currentSymbolIndex={currentSymbolIndexFromState} isError={isErrorFromState}/>
+        <Speed currentSymbolIndex={currentSymbolIndexFromState} />
+        <Accuracy countError={currentCountError} textArrayLength={textArrayFromState.length}/>
       </div>
     );
   }
